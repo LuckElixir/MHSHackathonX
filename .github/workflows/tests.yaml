@@ -1,0 +1,39 @@
+name: Python Tests
+on: [push, pull_request]
+
+jobs:
+  build-ubuntu:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test Shell
+        shell: bash
+        run: echo "SHELL"
+      - name: Install Requirements
+        shell: bash
+        run: pip install -r requirements.txt
+      - name: Run Tests
+        shell: bash
+        run: python tests/util.py
+
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Test Shell
+        shell: cmd
+        run: echo "SHELL"
+      - name: Install Requirements
+        shell: cmd
+        run: pip install -r requirements.txt
+      - name: Run Tests
+        shell: cmd
+        run: python tests/util.py

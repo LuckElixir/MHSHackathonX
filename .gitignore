@@ -1,0 +1,23 @@
+# VS Code
+.vscode/
+
+# JetBrains IDEs (IntelliJ, PyCharm, etc.)
+.idea/
+*.iml
+
+# Python specific (you might already have some of these)
+__pycache__/
+*.pyc
+*.pyd
+.mypy_cache/
+.pytest_cache/
+htmlcov/
+.tox/
+build/
+dist/
+venv/
+.env
+
+# OS Specific
+.DS_Store      # macOS
+Thumbs.db      # Windows
