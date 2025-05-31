@@ -1,1 +1,3 @@
-print("regularly scheduled testing environment")
+# import email_
+
+# email_.send_email("sriniranjan.gs@gmail.com")
