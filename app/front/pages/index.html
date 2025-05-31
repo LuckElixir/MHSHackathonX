@@ -2,95 +2,161 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SkipTheQueue - Contact Us</title>
-  <!-- Link to CSS in ../static/css/ -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkipTheQueue – Contact Us</title>
+
+  <!-- Google Font: Poppins -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
+  <!-- Main stylesheet -->
   <link rel="stylesheet" href="../static/css/styles.css" />
 </head>
+
 <body>
-  <header>Contact Us</header>
-
-  <div class="description">
-    <p>
-      Skip the wait! Tell us your problem and preferred contact method. We'll notify
-      you when it's your turn to call us, so you don't have to stay on hold.
-    </p>
-  </div>
-
-  <div class="contact-method">
-    <label for="contactPreference">How would you like to be contacted?</label>
-    <select id="contactPreference">
-      <option value="">Select an option</option>
-      <option value="sms">SMS</option>
-      <option value="email">Email</option>
-    </select>
-  </div>
-
-  <form id="contactForm">
-    <div id="smsFields" class="form-section">
-      <label for="name_sms">Your Name</label>
-      <input
-        type="text"
-        id="name_sms"
-        name="name_sms"
-        required
+  <header>
+    <!-- SVG phone icon (inline) + Animated heading -->
+    <svg
+      class="icon-phone"
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      width="32"
+      height="32"
+    >
+      <path
+        fill="#ffffff"
+        d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.21c1.12.45 2.33.69 3.57.69a1 1 0 011 1v3.5a1 1 0 01-1 1C10.07 21 3 13.93 3 5.5a1 1 0 011-1H7.5a1 1 0 011 1c0 1.24.24 2.45.69 3.57a1 1 0 01-.21 1.11l-2.36 2.61z"
       />
+    </svg>
+    <h1 class="slide-down">Contact Us</h1>
+  </header>
 
-      <label for="phone">Phone Number</label>
-      <input
-        type="tel"
-        id="phone"
-        name="phone"
-        placeholder="e.g., +1234567890"
-        required
-      />
+  <p class="subtitle">
+    <span class="underline-animate">
+      Skip the wait! Tell us your problem and preferred contact method. We'll
+      notify you when it's your turn to call us, so you don't have to stay on
+      hold.
+    </span>
+  </p>
 
-      <label for="issue_sms">Describe Your Issue</label>
-      <textarea
-        id="issue_sms"
-        name="issue_sms"
-        rows="4"
-        required
-      ></textarea>
+  <!-- Card container -->
+  <div class="card">
+    <div class="contact-method">
+      <label for="contactPreference">How would you like to be contacted?</label>
+      <select id="contactPreference">
+        <option value="">Select an option</option>
+        <option value="sms">SMS</option>
+        <option value="email">Email</option>
+      </select>
     </div>
 
-    <div id="emailFields" class="form-section">
-      <label for="name_email">Your Name</label>
-      <input
-        type="text"
-        id="name_email"
-        name="name_email"
-        required
-      />
+    <<form id="contactForm" novalidate>
+      <!-- 🔁 BACKEND INTERACTION:
+           On form submission, JavaScript should collect the appropriate input values
+           (based on SMS or Email option) and POST them to the backend API.
+           Backend should:
+           - Store contact info + issue
+           - Schedule response / notify user when ready
+      -->
+      <div id="smsFields" class="form-section">
+        <label for="name_sms">Your Name</label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="name_sms"
+            name="name_sms"
+            placeholder="John Doe"
+            required
+          />
+        </div>
 
-      <label for="email">Email Address</label>
-      <input
-        type="email"
-        id="email"
-        name="email"
-        placeholder="you@example.com"
-        required
-      />
+        <label for="phone">Phone Number</label>
+        <div class="input-wrapper">
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="+1 234 567 890"
+            required
+            pattern="^\+?[0-9\s-]{7,15}$"
+          />
+          <span class="validation-icon"></span>
+        </div>
 
-      <label for="issue_email">Describe Your Issue</label>
-      <textarea
-        id="issue_email"
-        name="issue_email"
-        rows="4"
-        required
-      ></textarea>
-    </div>
+        <label for="issue_sms">Describe Your Issue</label>
+        <div class="input-wrapper">
+          <textarea
+            id="issue_sms"
+            name="issue_sms"
+            rows="4"
+            placeholder="I need help with ..."
+            required
+          ></textarea>
+        </div>
+      </div>
 
-    <button id="submitBtn" type="submit" class="form-section">
-      Submit
-    </button>
-  </form>
+      <div id="emailFields" class="form-section">
+        <label for="name_email">Your Name</label>
+        <div class="input-wrapper">
+          <input
+            type="text"
+            id="name_email"
+            name="name_email"
+            placeholder="John Doe"
+            required
+          />
+        </div>
+
+        <label for="email">Email Address</label>
+        <div class="input-wrapper">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@example.com"
+            required
+          />
+          <span class="validation-icon"></span>
+        </div>
+
+        <label for="issue_email">Describe Your Issue</label>
+        <div class="input-wrapper">
+          <textarea
+            id="issue_email"
+            name="issue_email"
+            rows="4"
+            placeholder="I need help with ..."
+            required
+          ></textarea>
+        </div>
+      </div>
+
+      <button id="submitBtn" type="submit" class="form-section">
+        Submit
+      </button>
+    </form>
+  </div>
 
   <footer>
-    &copy; 2025 SkipTheQueue. All rights reserved.
+    <div class="footer-bar">
+      © 2025 SkipTheQueue. All rights reserved.
+    </div>
   </footer>
 
-  <!-- Link to JS in ../static/js/ -->
+  <!-- 🔁 BACKEND INTERACTION IN JAVASCRIPT:
+       This script should:
+       - Show/hide SMS or Email fields based on dropdown
+       - Listen for form submission
+       - Send form data to the backend via fetch() or AJAX
+       - Optionally handle backend response (e.g., show confirmation)
+  -->
   <script src="../static/js/script.js"></script>
 </body>
 </html>
