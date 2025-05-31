@@ -1,7 +1,7 @@
 import smtplib, ssl
 import traceback
 
-def send_sms(sender):
+def send_sms(sender, message):
     CARRIER_MAP = {
     "verizon": "vtext.com",
     "tmobile": "tmomail.net",
@@ -16,10 +16,6 @@ def send_sms(sender):
     sender_email = "noreply.skipthequeue@gmail.com"  # Enter your address
     receiver_email = sender  # Enter receiver address
     password = "bmyp tpwf uwdk uufn"
-    message = """\
-Subject: Hi there
-
-This message is sent from Python."""
     context = ssl.create_default_context()
     try:
         for value in CARRIER_MAP.values():
