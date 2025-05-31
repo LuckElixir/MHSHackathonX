@@ -1,5 +1,5 @@
 from flask import Flask 
-from flask import render_template, url_for
+from flask import render_template, url_for, request, redirect
 from markupsafe import escape
 import os
 
@@ -11,6 +11,11 @@ app: Flask = Flask(__name__, static_folder=os.path.join("app", "front", "static"
 def home():
     return "Hello World!"
 
+
+@app.route("/phonenumber", methods=["POST"])
+def takePhone():
+    if request.method:
+        pass
 
 if __name__ == "__main__":
     app.run(host='10.100.144.213', port=5000, debug=True, threaded=False)
