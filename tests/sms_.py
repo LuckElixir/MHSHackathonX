@@ -5,11 +5,11 @@ def send_sms(sender):
     CARRIER_MAP = {
     "verizon": "vtext.com",
     "tmobile": "tmomail.net",
-    "sprint": "messaging.sprintpcs.com",
+    #"sprint": "messaging.sprintpcs.com",
     "at&t": "txt.att.net",
-    "boost": "smsmyboostmobile.com",
-    "cricket": "sms.cricketwireless.net",
-    "uscellular": "email.uscc.net",
+    #"boost": "smsmyboostmobile.com",
+    #"cricket": "sms.cricketwireless.net",
+    #"uscellular": "email.uscc.net",
 }
     port = 465  # For TLS
     smtp_server = "smtp.gmail.com"
