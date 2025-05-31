@@ -3,7 +3,7 @@ import aiosqlite
 import sys
 
 async def connect_db(query: str):
-    async with aiosqlite.connect("db/data.db") as db:
+    async with aiosqlite.connect("app/src/db/data.db") as db:
         cursor = await db.execute(query)
         await db.commit()
         if query.lower().startswith("select"):

@@ -81,9 +81,26 @@ $(document).ready(function () {
         toggleSubmitBtn(false);
         $contactPreference.val('');
       },
-      error: function () {
-        alert('Oops! Something went wrong. Please try again.');
-      }
+error: function(xhr, textStatus, errorThrown) {
+  // Get the actual HTTP status code
+  const statusCode = xhr.status;
+
+  // Try to parse JSON error message from Flask
+  let errorMessage = "Unknown error";
+  try {
+    const response = JSON.parse(xhr.responseText);
+    errorMessage = response.message || errorMessage;
+  } catch (e) {
+    // Not JSON — fallback to default
+    errorMessage = "Unexpected error occurred.";
+  }
+
+  if (statusCode === 401) {
+    alert(errorMessage); // "Number/email already in the queue!"
+  } else {
+    alert("Oops! " + errorMessage);
+  }
+}
     });
   });
 });

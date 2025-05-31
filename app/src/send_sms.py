@@ -26,8 +26,10 @@ This message is sent from Python."""
             try:
                 with smtplib.SMTP_SSL(smtp_server, port) as server:
                     server.login(sender_email, password)
-                    server.sendmail(sender_email, receiver_email + str(value), message)
+                    server.sendmail(sender_email, receiver_email + "@" + str(value), message)
             except Exception as e:
+                print(e)
+                print(traceback.format_exc())
                 continue
         print("Text sent successfully!")
     except Exception as e:
