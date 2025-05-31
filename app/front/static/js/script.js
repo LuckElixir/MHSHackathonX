@@ -69,7 +69,7 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: 'https://example.com/submit', // replace with real endpoint
+      url: '/submit', // replace with real endpoint
       method: 'POST',
       data: JSON.stringify(formData),
       contentType: 'application/json',

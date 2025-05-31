@@ -4,8 +4,14 @@ import sys
 
 async def connect_db(query: str):
     async with aiosqlite.connect("db/data.db") as db:
-        await db.execute(query)
+        cursor = await db.execute(query)
         await db.commit()
+        if query.lower().startswith("select"):
+            rows = await cursor.fetchall()
+            columns = [description[0] for description in cursor.description]
+            results = [dict(zip(columns, row)) for row in rows]
+            return results
+        return None
 
 if __name__ == "__main__":
     print(' '.join(sys.argv[1:]))
