@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Send SMS</title>
+  </head>
+  <body>
+    <button onclick="sendSMS()">Send SMS</button>
+
+    <script>
+      function sendSMS() {
+        fetch("https://script.google.com/macros/s/AKfycbyVRxW6_BO11VTFdDUvIUMhPj8Mj3Lni_kk8gYOAk4jizZIruKIXFeSO4xgR7uHhrX3/exec", {
+          method: "POST"
+        })
+        .then(res => res.text())
+        .then(msg => alert(msg))
+        .catch(err => alert("Error: " + err));
+      }
+    </script>
+  </body>
+</html>
