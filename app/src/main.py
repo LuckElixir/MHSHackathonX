@@ -104,7 +104,10 @@ def login():
         return jsonify(response="success")
     else:
         return render_template("adminLogin.html")
-        
+
+@app.route("/contact")
+def contact():
+    return render_template("contactUsPage.html")
 
 if __name__ == "__main__":
     app.run(host='localhost', port=5000, debug=True, threaded=False)
