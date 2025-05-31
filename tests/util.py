@@ -1,3 +1,3 @@
-# import email_
+import email_
 
-# email_.send_email("sriniranjan.gs@gmail.com")
+email_.send_email("sriniranjan.gs@gmail.com")
