@@ -1,5 +1,5 @@
 from sqlite3 import IntegrityError
-
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask import render_template, url_for, request, redirect
 from flask import session
@@ -8,6 +8,7 @@ import os
 import queries
 import send_sms, send_email
 
+load_dotenv(".env")
 app: Flask = Flask(__name__, static_folder="../front/static/", static_url_path="/static", 
                    template_folder="../front/pages/")
 app.secret_key = "prettySecret"
@@ -100,7 +101,7 @@ async def popInformation():
 def login():
     if request.method == "POST":
         data = request.get_json()
-        if not data["email"] == "admin@gmail.com" or not data["password"] == "adminSkipQueue":
+        if not data["email"] == os.environ["ADMIN_USERNAME"] or not data["password"] == os.environ["ADMIN_PASSWORD"]:
            return jsonify(response="error", message="Invalid administration information"), 401 
         session["login"] = True
         return jsonify(response="success")

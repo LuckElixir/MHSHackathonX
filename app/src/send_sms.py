@@ -1,5 +1,9 @@
 import smtplib, ssl
 import traceback
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
 
 def send_sms(sender, message):
     CARRIER_MAP = {
@@ -16,7 +20,7 @@ def send_sms(sender, message):
     smtp_server = "smtp.gmail.com"
     sender_email = "noreply.skipthequeue@gmail.com"  # Enter your address
     receiver_email = sender  # Enter receiver address
-    password = "bmyp tpwf uwdk uufn"
+    password = os.environ["SMTP_PASSWORD"]
     context = ssl.create_default_context()
     try:
         for value in CARRIER_MAP.values():
