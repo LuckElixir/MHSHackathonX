@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkipTheQueue – Business Dashboard</title>
+
+  <!-- Google Font: Poppins -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Link to the business‐side CSS -->
+  <link rel="stylesheet" href="../static/css/stylesNew.css" />
+</head>
+
+<body>
+  <header class="dashboard-header">
+    <h1 class="dash-title">SkipTheQueue</h1>
+  </header>
+
+  <main class="container">
+    <section class="panel left-panel">
+      <h2 class="panel-heading">Now Serving</h2>
+
+      <div class="current-info">
+        <div class="current-contact">(---) --------</div>
+        <div class="current-name">No one</div>
+      </div>
+
+      <div id="servingNumber" class="serving-number">0</div>
+      <p class="serving-note">Click the number to serve next person</p>
+
+      <h3 class="add-header">Add to Queue</h3>
+      <form id="addForm" class="add-form">
+        <input
+          type="tel"
+          id="newPhone"
+          name="newPhone"
+          placeholder="Phone (e.g. +1 234 567 890)"
+          required
+        />
+        <input
+          type="text"
+          id="newName"
+          name="newName"
+          placeholder="Name"
+          required
+        />
+        <button type="submit" class="add-btn">Add</button>
+      </form>
+    </section>
+
+    <section class="panel right-panel">
+      <h2 class="panel-heading">People in Queue</h2>
+      <div class="queue-header">
+        <span id="queueCount">0</span> in queue
+      </div>
+      <ul id="queueList" class="queue-list"></ul>
+    </section>
+  </main>
+
+  <footer class="dashboard-footer">
+    © 2025 SkipTheQueue. All rights reserved.
+  </footer>
+
+  <script src="../static/js/scriptNew.js"></script>
+</body>
+</html>
