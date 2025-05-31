@@ -3,13 +3,14 @@ import traceback
 
 def send_sms(sender, message):
     CARRIER_MAP = {
-    "verizon": "vtext.com",
-    "tmobile": "tmomail.net",
-    "sprint": "messaging.sprintpcs.com",
-    "at&t": "txt.att.net",
-    "boost": "smsmyboostmobile.com",
-    "cricket": "sms.cricketwireless.net",
-    "uscellular": "email.uscc.net",
+    "tmobile": "@tmomail.net",
+    "googlefi": "@msg.fi.google.com",
+    "at&t": "@txt.att.net",
+    "verizon": "@vtext.com",
+    #"sprint": "@messaging.sprintpcs.com",
+    #"boost": "@smsmyboostmobile.com",
+    #"cricket": "@sms.cricketwireless.net",
+    #"uscellular": "@email.uscc.net",
 }
     port = 465  # For TLS
     smtp_server = "smtp.gmail.com"
@@ -21,8 +22,9 @@ def send_sms(sender, message):
         for value in CARRIER_MAP.values():
             try:
                 with smtplib.SMTP_SSL(smtp_server, port) as server:
+                    print(message)
                     server.login(sender_email, password)
-                    server.sendmail(sender_email, receiver_email + "@" + str(value), message)
+                    server.sendmail(sender_email, (receiver_email + value), message)
             except Exception as e:
                 print(e)
                 print(traceback.format_exc())

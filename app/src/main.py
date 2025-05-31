@@ -32,7 +32,7 @@ async def takePhone():
                     await queries.connect_db(query)
                     query = "SELECT * FROM user_information;"
                     results: list = await queries.connect_db(query)
-                    send_email.send_email(email, "Your Position in the queue!", f"Hello {name}! You have successfully signed up for the email! Your current position is: {len(results) + 1}")
+                    send_email.send_email(email, "Your Position in the queue!", f"Hello {name}! You have successfully signed up for the email! Your current position is {len(results)}")
                     return jsonify(response="success", message="Email data processed")
                 elif data["type"] == "sms":
                     phone = data["phone"]
@@ -43,7 +43,7 @@ async def takePhone():
                     await queries.connect_db(query)
                     query = "SELECT * FROM user_information;"
                     results: list = await queries.connect_db(query)
-                    send_sms.send_sms(phone, f"Hello {name}! You have successfully signed up for an SMS notification! Your current position is: {len(results) + 1}")
+                    send_sms.send_sms(phone, f"Hello {name}! You have successfully signed up for an SMS notification! Your current position is {len(results)}")
                     return jsonify(response="success", message="SMS data processed")
                 else:
                     return jsonify(response="error", message="Invalid 'type' in request"), 400
@@ -85,9 +85,11 @@ async def popInformation():
         query = "SELECT * FROM user_information;"
         results: list = await queries.connect_db(query)
         if results[0]["Preferred_Contact"] == 1:
+            print(results[0]['Email'] + " next!")
             send_email.send_email(results[0]['Email'], "It is your turn!", f"Hello {results[0]['Name']}! It is now your turn for the call!")
         if results[0]["Preferred_Contact"] == 2:
-            send_sms.send_sms(results[0]['Phone'], f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
+            print(str(results[0]['Phone']) + " next!")
+            send_sms.send_sms(str(results[0]['Phone']), f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
         return jsonify(results)
     except IndexError:
         return jsonify(response="error", message="No records to pop"), 200
