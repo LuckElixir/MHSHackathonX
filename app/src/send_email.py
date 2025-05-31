@@ -2,13 +2,17 @@ import smtplib, ssl
 import traceback
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+from dotenv import load_dotenv
+import os
+
+load_dotenv(".env")
 
 def send_email(sender, subject, messageText):
     port = 465  # For TLS
     smtp_server = "smtp.gmail.com"
     sender_email = "noreply.skipthequeue@gmail.com"  # Enter your address
     receiver_email = sender  # Enter receiver address
-    password = "bmyp tpwf uwdk uufn"
+    password = os.environ["SMTP_PASSWORD"]
     message = MIMEMultipart("alternative")
     message["Subject"] = subject
     message["From"] = sender_email

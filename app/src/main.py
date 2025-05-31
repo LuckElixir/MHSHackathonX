@@ -1,5 +1,5 @@
 from sqlite3 import IntegrityError
-
+from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask import render_template, url_for, request, redirect
 from flask import session
@@ -8,6 +8,7 @@ import os
 import queries
 import send_sms, send_email
 
+load_dotenv(".env")
 app: Flask = Flask(__name__, static_folder="../front/static/", static_url_path="/static", 
                    template_folder="../front/pages/")
 app.secret_key = "prettySecret"
@@ -32,7 +33,7 @@ async def takePhone():
                     await queries.connect_db(query)
                     query = "SELECT * FROM user_information;"
                     results: list = await queries.connect_db(query)
-                    send_email.send_email(email, "Your Position in the queue!", f"Hello {name}! You have successfully signed up for the email! Your current position is: {len(results) + 1}")
+                    send_email.send_email(email, "Your Position in the queue!", f"Hello {name}! You have successfully signed up for the email! Your current position is {len(results)}")
                     return jsonify(response="success", message="Email data processed")
                 elif data["type"] == "sms":
                     phone = data["phone"]
@@ -43,7 +44,7 @@ async def takePhone():
                     await queries.connect_db(query)
                     query = "SELECT * FROM user_information;"
                     results: list = await queries.connect_db(query)
-                    send_sms.send_sms(phone, f"Hello {name}! You have successfully signed up for an SMS notification! Your current position is: {len(results) + 1}")
+                    send_sms.send_sms(phone, f"Hello {name}! You have successfully signed up for an SMS notification! Your current position is {len(results)}")
                     return jsonify(response="success", message="SMS data processed")
                 else:
                     return jsonify(response="error", message="Invalid 'type' in request"), 400
@@ -85,9 +86,11 @@ async def popInformation():
         query = "SELECT * FROM user_information;"
         results: list = await queries.connect_db(query)
         if results[0]["Preferred_Contact"] == 1:
+            print(results[0]['Email'] + " next!")
             send_email.send_email(results[0]['Email'], "It is your turn!", f"Hello {results[0]['Name']}! It is now your turn for the call!")
         if results[0]["Preferred_Contact"] == 2:
-            send_sms.send_sms(results[0]['Phone'], f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
+            print(str(results[0]['Phone']) + " next!")
+            send_sms.send_sms(str(results[0]['Phone']), f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
         return jsonify(results)
     except IndexError:
         return jsonify(response="error", message="No records to pop"), 200
@@ -98,7 +101,7 @@ async def popInformation():
 def login():
     if request.method == "POST":
         data = request.get_json()
-        if not data["email"] == "admin@gmail.com" or not data["password"] == "adminSkipQueue":
+        if not data["email"] == os.environ["ADMIN_USERNAME"] or not data["password"] == os.environ["ADMIN_PASSWORD"]:
            return jsonify(response="error", message="Invalid administration information"), 401 
         session["login"] = True
         return jsonify(response="success")
