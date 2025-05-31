@@ -14,11 +14,7 @@ $(document).ready(function () {
   }
 
   function toggleSubmitBtn(show) {
-    if (show) {
-      $submitBtn.addClass('visible');
-    } else {
-      $submitBtn.removeClass('visible');
-    }
+    $submitBtn.css('display', show ? 'block' : 'none');
   }
 
   $contactPreference.on('change', function () {
@@ -73,7 +69,7 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: '/submit', // replace with real endpoint
+      url: 'https://example.com/submit', // replace with real endpoint
       method: 'POST',
       data: JSON.stringify(formData),
       contentType: 'application/json',
