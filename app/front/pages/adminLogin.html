@@ -9,12 +9,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
 
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="../static/css/adminLogin.css" />
+  <link rel="stylesheet" href="static/css/adminLogin.css" />
 
   <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-          integrity="sha256-3fp2aCP4zT+Y+ZLXpFpvXQgBlKDsXQzYHcAMQb+7yz8="
-          crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <script src="static/js/adminLogin.js"></script>
 </head>
 <body>
   <div class="login-container">
@@ -28,12 +28,11 @@
       <label for="loginPassword">Password</label>
       <input type="password" id="loginPassword" name="loginPassword" placeholder="••••••••" required />
 
-      <button type="submit" id="loginButton">Log In</button>
+      <button type="button" id="loginButton">Log In</button>
     </form>
 
     <div id="loginMessage"></div>
   </div>
 
-  <script src="../static/js/adminLogin.js"></script>
 </body>
 </html>

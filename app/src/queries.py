@@ -8,6 +8,7 @@ async def connect_db(query: str):
         await db.commit()
         if query.lower().startswith("select"):
             rows = await cursor.fetchall()
+            print(rows)
             columns = [description[0] for description in cursor.description]
             results = [dict(zip(columns, row)) for row in rows]
             return results
@@ -16,3 +17,6 @@ async def connect_db(query: str):
 if __name__ == "__main__":
     print(' '.join(sys.argv[1:]))
     asyncio.run(connect_db(' '.join(sys.argv[1:])))
+    query = "SELECT * FROM user_information;"
+    results = asyncio.run(connect_db(query))
+    print(results)

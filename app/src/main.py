@@ -53,12 +53,36 @@ async def takePhone():
         return jsonify(response="error", message="Only POST requests are allowed"), 405
 
 
-@app.route("/queue", methods=["GET", "POST"])
+@app.route("/queue")
 def updateQueue():
-    if request.method == "POST":
-        pass      
+    if session.get("login", False):
+        return render_template("queueViewer.html")
     else:
-        pass
+        return redirect("/login")
+
+
+@app.route("/api/pull", methods=["POST"])
+async def pullInformation():
+    try:
+        query = "SELECT * FROM user_information;"
+        results = await queries.connect_db(query)
+        print(results)
+        return jsonify(results)
+    except Exception as e:
+        return jsonify(response="error", message=f"Error pulling queue data: {str(e)}"), 500
+
+@app.route("/api/pop", methods=["POST"])
+async def popInformation():
+    try:
+        query = "SELECT * FROM user_information;"
+        results = await queries.connect_db(query)
+        query = f"DELETE FROM user_information WHERE Name='{results[0]["Name"]}' "
+        results = await queries.connect_db(query)
+        return jsonify(results)
+    except IndexError:
+        return jsonify(response="error", message="No records to pop"), 200
+    except Exception as e:
+        return jsonify(response="error", message=f"Error pulling queue data: {str(e)}"), 500
 
 @app.route("/login", methods=["GET", "POST"])
 def login():

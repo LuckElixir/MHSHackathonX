@@ -1,11 +1,13 @@
-$(document).ready(function () {
-  $('#loginForm').on('submit', function (e) {
+$(document).ready(function() {
+  $('#loginButton').click(function (e) {
     e.preventDefault();
-
+    console.log("This thing is cooked");
     const email = $('#loginEmail').val();
     const password = $('#loginPassword').val();
 
-    // 🔁 BACKEND INTERACTION: Replace URL with real login endpoint
+    console.log("Login button clicked!"); // Add this line for immediate feedback
+
+    // BACKEND INTERACTION: Replace URL with real login endpoint
     $.ajax({
       url: '/login',
       method: 'POST',
