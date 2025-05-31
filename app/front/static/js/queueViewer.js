@@ -1,5 +1,4 @@
-// Elements
-const servingNumberEl = document.getElementById('servingNumber');
+const serveNextBtn = document.getElementById('serveNextBtn');
 const currentContactEl = document.querySelector('.current-contact');
 const currentNameEl = document.querySelector('.current-name');
 
@@ -9,13 +8,7 @@ const newNameInput = document.getElementById('newName');
 const queueListEl = document.getElementById('queueList');
 const queueCountEl = document.getElementById('queueCount');
 
-let servingNumber = 0;
 let queueCount = 0;
-
-// Update UI displays
-function updateServingDisplay() {
-  servingNumberEl.textContent = servingNumber;
-}
 
 function updateQueueDisplay() {
   queueCountEl.textContent = queueCount;
@@ -44,16 +37,12 @@ function appendToQueue(name, phone) {
 
   queueCount += 1;
   updateQueueDisplay();
-
   newPhoneInput.value = '';
   newNameInput.value = '';
 }
 
 // Serve next person
-servingNumberEl.addEventListener('click', () => {
-  servingNumber += 1;
-  updateServingDisplay();
-
+serveNextBtn.addEventListener('click', () => {
   const firstItem = queueListEl.querySelector('li');
   if (firstItem) {
     const itemText = firstItem.querySelector('.item-text').textContent;
@@ -70,7 +59,7 @@ servingNumberEl.addEventListener('click', () => {
   }
 });
 
-// Add to queue with simulated AJAX response
+// Add to queue
 addForm.addEventListener('submit', function (e) {
   e.preventDefault();
 
@@ -78,28 +67,21 @@ addForm.addEventListener('submit', function (e) {
   const nameVal = newNameInput.value.trim();
   if (!phoneVal || !nameVal) return;
 
-  // Simulated success response
   alert('Successfully added to the queue! (Simulated)');
   appendToQueue(nameVal, phoneVal);
 
+  // AJAX call placeholder
   /*
-  // AJAX POST to dummy URL
   $.ajax({
-    url: 'https://example.com/api/add-to-queue',
-    type: 'POST',
+    url: '/api/add',
+    method: 'POST',
     contentType: 'application/json',
     data: JSON.stringify({ name: nameVal, phone: phoneVal }),
-    success: function () {
-      alert('Successfully added to the queue!');
-      appendToQueue(nameVal, phoneVal);
-    },
-    error: function () {
-      alert('Failed to add to the queue. Please try again.');
-    }
+    success: () => appendToQueue(nameVal, phoneVal),
+    error: () => alert('Failed to add to the queue.')
   });
   */
 });
 
-// Init displays
-updateServingDisplay();
+// Initial update
 updateQueueDisplay();
