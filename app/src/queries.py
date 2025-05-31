@@ -7,5 +7,6 @@ async def connect_db(query: str):
         await db.execute(query)
         await db.commit()
 
-print(' '.join(sys.argv[1:]))
-asyncio.run(connect_db(' '.join(sys.argv[1:])))
+if __name__ == "__main__":
+    print(' '.join(sys.argv[1:]))
+    asyncio.run(connect_db(' '.join(sys.argv[1:])))
