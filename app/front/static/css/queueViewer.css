@@ -39,12 +39,13 @@ body {
   background-color: #ffffff;
   border-radius: 12px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.10);
-  width: 320px;
-  max-width: 90%;
-  padding: 1.5rem 1.25rem;
+  width: 720px; /* Increased from 320px */
+  max-width: 95%; /* Slightly more room on narrow viewports */
+  padding: 1.5rem 1.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
+  word-wrap: break-word; /* Ensure long words wrap */
 }
 
 .panel-heading {
@@ -137,15 +138,19 @@ body {
 .queue-item {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start; /* Align to top in case of multiline */
   background-color: #f7f7f7;
   padding: 0.6rem 0.8rem;
   border-radius: 6px;
   margin-bottom: 0.5rem;
+  gap: 1rem; /* Add spacing between name/email and remove button */
 }
 
 .item-text {
   font-size: 14px;
+  flex: 1; /* Allows it to take more space */
+  word-break: break-word; /* Allows breaking long strings like emails */
+  overflow-wrap: anywhere;
 }
 
 .remove-btn {

@@ -30,7 +30,9 @@ async def takePhone():
                     # Assuming 1 means email
                     query = f"INSERT INTO user_information (Name, Preferred_Contact, Phone, Email) VALUES ('{name}', {preferred_response},  NULL, '{email}');"
                     await queries.connect_db(query)
-                    send_email.send_email(email)
+                    query = "SELECT * FROM user_information;"
+                    results: list = await queries.connect_db(query)
+                    send_email.send_email(email, "Your Position in the queue!", f"Hello {name}! You have successfully signed up for the email! Your current position is: {len(results) + 1}")
                     return jsonify(response="success", message="Email data processed")
                 elif data["type"] == "sms":
                     phone = data["phone"]
@@ -39,7 +41,9 @@ async def takePhone():
                     # Assuming 2 means sms
                     query = f"INSERT INTO user_information (Name, Preferred_Contact, Phone, Email) VALUES ('{name}', {preferred_response}, '{phone}', NULL);"
                     await queries.connect_db(query)
-                    send_sms.send_sms(phone)
+                    query = "SELECT * FROM user_information;"
+                    results: list = await queries.connect_db(query)
+                    send_sms.send_sms(phone, f"Hello {name}! You have successfully signed up for an SMS notification! Your current position is: {len(results) + 1}")
                     return jsonify(response="success", message="SMS data processed")
                 else:
                     return jsonify(response="error", message="Invalid 'type' in request"), 400
@@ -61,7 +65,7 @@ def updateQueue():
         return redirect("/login")
 
 
-@app.route("/api/pull", methods=["POST"])
+@app.route("/api/pull", methods=["POST", "GET"])
 async def pullInformation():
     try:
         query = "SELECT * FROM user_information;"
@@ -78,6 +82,12 @@ async def popInformation():
         results = await queries.connect_db(query)
         query = f"DELETE FROM user_information WHERE Name='{results[0]["Name"]}' "
         results = await queries.connect_db(query)
+        query = "SELECT * FROM user_information;"
+        results: list = await queries.connect_db(query)
+        if results[0]["Preferred_Contact"] == 1:
+            send_email.send_email(results[0]['Email'], "It is your turn!", f"Hello {results[0]['Name']}! It is now your turn for the call!")
+        if results[0]["Preferred_Contact"] == 2:
+            send_sms.send_sms(results[0]['Phone'], f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
         return jsonify(results)
     except IndexError:
         return jsonify(response="error", message="No records to pop"), 200
@@ -94,7 +104,10 @@ def login():
         return jsonify(response="success")
     else:
         return render_template("adminLogin.html")
-        
+
+@app.route("/contact")
+def contact():
+    return render_template("contactUsPage.html")
 
 if __name__ == "__main__":
     app.run(host='localhost', port=5000, debug=True, threaded=False)

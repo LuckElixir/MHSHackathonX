@@ -1,87 +1,90 @@
-const serveNextBtn = document.getElementById('serveNextBtn');
-const currentContactEl = document.querySelector('.current-contact');
-const currentNameEl = document.querySelector('.current-name');
+$(document).ready(function () {
+  const $serveNextBtn = $("#serveNextBtn");
+  const $currentContact = $("#current-contact");
+  const $currentName = $("#current-name");
+  const $queueList = $("#queueList");
+  const $queueCount = $("#queueCount");
 
-const addForm = document.getElementById('addForm');
-const newPhoneInput = document.getElementById('newPhone');
-const newNameInput = document.getElementById('newName');
-const queueListEl = document.getElementById('queueList');
-const queueCountEl = document.getElementById('queueCount');
-
-let queueCount = 0;
-
-function updateQueueDisplay() {
-  queueCountEl.textContent = queueCount;
-}
-
-function appendToQueue(name, phone) {
-  const li = document.createElement('li');
-  li.className = 'queue-item';
-
-  const textSpan = document.createElement('span');
-  textSpan.className = 'item-text';
-  textSpan.textContent = `${name} – ${phone}`;
-
-  const removeBtn = document.createElement('button');
-  removeBtn.className = 'remove-btn';
-  removeBtn.textContent = '✖';
-  removeBtn.addEventListener('click', () => {
-    li.remove();
-    queueCount -= 1;
-    updateQueueDisplay();
-  });
-
-  li.appendChild(textSpan);
-  li.appendChild(removeBtn);
-  queueListEl.appendChild(li);
-
-  queueCount += 1;
-  updateQueueDisplay();
-  newPhoneInput.value = '';
-  newNameInput.value = '';
-}
-
-// Serve next person
-serveNextBtn.addEventListener('click', () => {
-  const firstItem = queueListEl.querySelector('li');
-  if (firstItem) {
-    const itemText = firstItem.querySelector('.item-text').textContent;
-    const [namePart, phonePart] = itemText.split(' – ');
-    currentNameEl.textContent = namePart || 'No one';
-    currentContactEl.textContent = phonePart || '(---) --------';
-
-    firstItem.remove();
-    queueCount -= 1;
-    updateQueueDisplay();
-  } else {
-    currentNameEl.textContent = 'No one';
-    currentContactEl.textContent = '(---) --------';
+  // Helper: Extract the preferred contact (Phone or Email)
+  function getContact(person) {
+    return person.Phone ? person.Phone : person.Email;
   }
+
+  // Update the list of people in queue
+function updateQueueDisplay(queue) {
+    $queueList.empty();
+    $queueCount.text(queue.length);
+
+    // Update "Now Serving"
+    if (queue.length > 0) {
+      const person = queue[0]; // First in queue
+      const contact = getContact(person);
+      $currentContact.text(contact);
+      $currentName.text(person.Name);
+    } else {
+      $currentContact.text("(---) --------");
+      $currentName.text("No one");
+    }
+
+    // Render full queue list
+    queue.forEach((person) => {
+      const contact = getContact(person);
+      const $li = $(`
+        <li class="queue-item">
+          <span class="queue-name">${person.Name}</span>
+          <span class="queue-contact">${contact}</span>
+        </li>
+      `);
+      $queueList.append($li);
+    });
+  }
+
+
+  // Fetch the queue from the backend
+  function fetchQueue() {
+    $.ajax({
+      url: "/api/pull",
+      method: "GET",
+      dataType: "json",
+      success: function (data) {
+        updateQueueDisplay(data);
+      },
+      error: function () {
+        console.error("Error fetching queue data.");
+      }
+    });
+  }
+
+  // Serve the next person
+  function serveNextPerson() {
+    $.ajax({
+      url: "/api/pop",
+      method: "POST",
+      dataType: "json",
+      success: function (person) {
+        if (!person || (!person.Phone && !person.Email)) {
+          $currentContact.text("(---) --------");
+          $currentName.text("No one");
+        } else {
+          const contact = getContact(person);
+          $currentContact.text(contact);
+          $currentName.text(person.Name);
+        }
+
+        fetchQueue(); // Refresh queue after serving
+      },
+      error: function () {
+        console.error("Error serving next person.");
+      }
+    });
+  }
+
+  // Bind click event to Serve Next button
+  $serveNextBtn.on("click", serveNextPerson);
+
+  // Initial fetch
+  fetchQueue();
+
+  // Auto-refresh the queue every 5 seconds
+  setInterval(fetchQueue, 5000);
 });
-
-// Add to queue
-addForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-
-  const phoneVal = newPhoneInput.value.trim();
-  const nameVal = newNameInput.value.trim();
-  if (!phoneVal || !nameVal) return;
-
-  alert('Successfully added to the queue! (Simulated)');
-  appendToQueue(nameVal, phoneVal);
-
-  // AJAX call placeholder
-  /*
-  $.ajax({
-    url: '/api/add',
-    method: 'POST',
-    contentType: 'application/json',
-    data: JSON.stringify({ name: nameVal, phone: phoneVal }),
-    success: () => appendToQueue(nameVal, phoneVal),
-    error: () => alert('Failed to add to the queue.')
-  });
-  */
-});
-
-// Initial update
-updateQueueDisplay();
