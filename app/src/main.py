@@ -61,7 +61,7 @@ def updateQueue():
         return redirect("/login")
 
 
-@app.route("/api/pull", methods=["POST"])
+@app.route("/api/pull", methods=["POST", "GET"])
 async def pullInformation():
     try:
         query = "SELECT * FROM user_information;"
