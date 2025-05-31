@@ -71,7 +71,6 @@ async def pullInformation():
     try:
         query = "SELECT * FROM user_information;"
         results = await queries.connect_db(query)
-        print(results)
         return jsonify(results)
     except Exception as e:
         return jsonify(response="error", message=f"Error pulling queue data: {str(e)}"), 500
@@ -90,7 +89,7 @@ async def popInformation():
             send_email.send_email(results[0]['Email'], "It is your turn!", f"Hello {results[0]['Name']}! It is now your turn for the call!")
         if results[0]["Preferred_Contact"] == 2:
             print(str(results[0]['Phone']) + " next!")
-            send_sms.send_sms(str(results[0]['Phone']), f"It is your turn, {results[0]['Name']}! It is now your turn for the call!")
+            send_sms.send_sms(str(results[0]['Phone']), f"It is your turn, {results[0]['Name']}! The time to call has come!")
         return jsonify(results)
     except IndexError:
         return jsonify(response="error", message="No records to pop"), 200

@@ -18,16 +18,12 @@ def send_email(sender, subject, messageText):
     message["From"] = sender_email
     message["To"] = receiver_email
     message.attach(MIMEText(messageText, "plain"))
-    print("BeforeContext")
     context = ssl.create_default_context()
     try:
-        print("BeforeWith")
         with smtplib.SMTP_SSL(smtp_server, port) as server:
-            print("IntoWith")
             server.login(sender_email, password)
-            print("AfterLogin")
             server.sendmail(sender_email, receiver_email, message.as_string())
-        print("Email sent successfully!")
+        print(f"Email sent successfully to {sender}!")
     except Exception as e:
         print(f"An error occurred: {e}")
         print(traceback.format_exc())

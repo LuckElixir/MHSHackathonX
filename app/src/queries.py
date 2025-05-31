@@ -8,7 +8,6 @@ async def connect_db(query: str):
         await db.commit()
         if query.lower().startswith("select"):
             rows = await cursor.fetchall()
-            print(rows)
             columns = [description[0] for description in cursor.description]
             results = [dict(zip(columns, row)) for row in rows]
             return results
