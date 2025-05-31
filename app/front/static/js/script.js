@@ -1,69 +1,89 @@
-// Elements
-const contactPreference = document.getElementById('contactPreference');
-const smsFields = document.getElementById('smsFields');
-const emailFields = document.getElementById('emailFields');
-const submitBtn = document.getElementById('submitBtn');
-const contactForm = document.getElementById('contactForm');
+$(document).ready(function () {
+  const $contactPreference = $('#contactPreference');
+  const $smsFields = $('#smsFields');
+  const $emailFields = $('#emailFields');
+  const $submitBtn = $('#submitBtn');
+  const $contactForm = $('#contactForm');
 
-// Helper: show or hide a section by toggling the "visible" class
-function toggleSection(section, show) {
-  if (show) {
-    section.classList.add('visible');
-  } else {
-    section.classList.remove('visible');
-  }
-}
-
-// 1) Animate the form sections when dropdown changes
-contactPreference.addEventListener('change', () => {
-  const method = contactPreference.value;
-
-  // Hide both first
-  toggleSection(smsFields, false);
-  toggleSection(emailFields, false);
-  toggleSection(submitBtn, false);
-
-  // Show the one chosen
-  if (method === 'sms') {
-    toggleSection(smsFields, true);
-    toggleSection(submitBtn, true);
-  } else if (method === 'email') {
-    toggleSection(emailFields, true);
-    toggleSection(submitBtn, true);
-  }
-});
-
-// 2) Live validation feedback for phone & email
-function setupValidation(inputElem) {
-  inputElem.addEventListener('input', () => {
-    // If field is required and valid according to its built-in pattern/type
-    if (inputElem.checkValidity()) {
-      inputElem.classList.add('valid');
-      inputElem.classList.remove('invalid');
+  function toggleSection($section, show) {
+    if (show) {
+      $section.addClass('visible');
     } else {
-      inputElem.classList.add('invalid');
-      inputElem.classList.remove('valid');
+      $section.removeClass('visible');
+    }
+  }
+
+  function toggleSubmitBtn(show) {
+    $submitBtn.css('display', show ? 'block' : 'none');
+  }
+
+  $contactPreference.on('change', function () {
+    const method = $(this).val();
+
+    toggleSection($smsFields, false);
+    toggleSection($emailFields, false);
+    toggleSubmitBtn(false);
+
+    if (method === 'sms') {
+      toggleSection($smsFields, true);
+      toggleSubmitBtn(true);
+    } else if (method === 'email') {
+      toggleSection($emailFields, true);
+      toggleSubmitBtn(true);
     }
   });
-}
 
-// Attach validation to both phone and email inputs
-const phoneInput = document.getElementById('phone');
-const emailInput = document.getElementById('email');
-if (phoneInput) setupValidation(phoneInput);
-if (emailInput) setupValidation(emailInput);
+  function setupValidation($inputElem) {
+    $inputElem.on('input', function () {
+      if (this.checkValidity()) {
+        $(this).addClass('valid').removeClass('invalid');
+      } else {
+        $(this).addClass('invalid').removeClass('valid');
+      }
+    });
+  }
 
-// 3) Handle form submission
-contactForm.addEventListener('submit', (e) => {
-  e.preventDefault();
+  setupValidation($('#phone'));
+  setupValidation($('#email'));
 
-  // Simple confirmation message
-  alert('Thank you! Your request has been submitted. We will contact you soon.');
+  $contactForm.on('submit', function (e) {
+    e.preventDefault();
 
-  // Reset & hide everything again
-  contactForm.reset();
-  toggleSection(smsFields, false);
-  toggleSection(emailFields, false);
-  toggleSection(submitBtn, false);
-  contactPreference.value = '';
+    const method = $contactPreference.val();
+    let formData = {};
+
+    if (method === 'sms') {
+      formData = {
+        name: $('#name_sms').val(),
+        phone: $('#phone').val(),
+        issue: $('#issue_sms').val(),
+        type: 'sms'
+      };
+    } else if (method === 'email') {
+      formData = {
+        name: $('#name_email').val(),
+        email: $('#email').val(),
+        issue: $('#issue_email').val(),
+        type: 'email'
+      };
+    }
+
+    $.ajax({
+      url: 'https://example.com/submit', // replace with real endpoint
+      method: 'POST',
+      data: JSON.stringify(formData),
+      contentType: 'application/json',
+      success: function () {
+        alert('Thank you! Your request has been submitted.');
+        $contactForm[0].reset();
+        toggleSection($smsFields, false);
+        toggleSection($emailFields, false);
+        toggleSubmitBtn(false);
+        $contactPreference.val('');
+      },
+      error: function () {
+        alert('Oops! Something went wrong. Please try again.');
+      }
+    });
+  });
 });

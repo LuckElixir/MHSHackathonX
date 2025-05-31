@@ -11,6 +11,11 @@
     rel="stylesheet"
   />
 
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
   <!-- Link to the business‐side CSS -->
   <link rel="stylesheet" href="../static/css/stylesNew.css" />
 </head>
@@ -29,10 +34,19 @@
         <div class="current-name">No one</div>
       </div>
 
+      <!-- 🔁 BACKEND INTERACTION:
+           This number should be updated when the "next" person is served.
+           JavaScript should fetch the next user from the backend and update this.
+      -->
       <div id="servingNumber" class="serving-number">0</div>
       <p class="serving-note">Click the number to serve next person</p>
 
       <h3 class="add-header">Add to Queue</h3>
+
+      <!-- 🔁 BACKEND INTERACTION:
+           On submit, this form should send the user's name and phone number to the backend.
+           JavaScript should handle form submission and make a POST request to store the entry.
+      -->
       <form id="addForm" class="add-form">
         <input
           type="tel"
@@ -55,8 +69,17 @@
     <section class="panel right-panel">
       <h2 class="panel-heading">People in Queue</h2>
       <div class="queue-header">
+        <!-- 🔁 BACKEND INTERACTION:
+             This number should reflect the current queue length fetched from the backend.
+        -->
         <span id="queueCount">0</span> in queue
       </div>
+
+      <!-- 🔁 BACKEND INTERACTION:
+           This list should be dynamically populated from the backend queue data.
+           JavaScript should fetch and render each person's name/phone.
+           Also allow removing/crossing out users via backend request.
+      -->
       <ul id="queueList" class="queue-list"></ul>
     </section>
   </main>
@@ -65,6 +88,13 @@
     © 2025 SkipTheQueue. All rights reserved.
   </footer>
 
+  <!-- 🔁 BACKEND INTERACTION IN JAVASCRIPT:
+       This JS should:
+       - Fetch the current queue on page load
+       - Handle "Add" form submission
+       - Handle "Serve next" actions
+       - Update UI based on backend responses
+  -->
   <script src="../static/js/scriptNew.js"></script>
 </body>
 </html>

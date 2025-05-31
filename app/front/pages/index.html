@@ -11,6 +11,11 @@
     rel="stylesheet"
   />
 
+  <script
+  src="https://code.jquery.com/jquery-3.7.1.js"
+  integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
+  crossorigin="anonymous"></script>
+
   <!-- Main stylesheet -->
   <link rel="stylesheet" href="../static/css/styles.css" />
 </head>
@@ -34,11 +39,11 @@
   </header>
 
   <p class="subtitle">
-    <span class="underline-animate"
-      >Skip the wait! Tell us your problem and preferred contact method. We'll
+    <span class="underline-animate">
+      Skip the wait! Tell us your problem and preferred contact method. We'll
       notify you when it's your turn to call us, so you don't have to stay on
-      hold.</span
-    >
+      hold.
+    </span>
   </p>
 
   <!-- Card container -->
@@ -52,7 +57,14 @@
       </select>
     </div>
 
-    <form id="contactForm">
+    <<form id="contactForm" novalidate>
+      <!-- 🔁 BACKEND INTERACTION:
+           On form submission, JavaScript should collect the appropriate input values
+           (based on SMS or Email option) and POST them to the backend API.
+           Backend should:
+           - Store contact info + issue
+           - Schedule response / notify user when ready
+      -->
       <div id="smsFields" class="form-section">
         <label for="name_sms">Your Name</label>
         <div class="input-wrapper">
@@ -138,7 +150,13 @@
     </div>
   </footer>
 
-  <!-- Main JavaScript -->
+  <!-- 🔁 BACKEND INTERACTION IN JAVASCRIPT:
+       This script should:
+       - Show/hide SMS or Email fields based on dropdown
+       - Listen for form submission
+       - Send form data to the backend via fetch() or AJAX
+       - Optionally handle backend response (e.g., show confirmation)
+  -->
   <script src="../static/js/script.js"></script>
 </body>
 </html>
