@@ -5,19 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SkipTheQueue – Business Dashboard</title>
 
-  <!-- Google Font: Poppins -->
-  <link
-    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
-    rel="stylesheet"
-  />
-
-  <script
-  src="https://code.jquery.com/jquery-3.7.1.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.7.1.js" crossorigin="anonymous"></script>
 
   <!-- Link to the business‐side CSS -->
   <link rel="stylesheet" href="../static/css/queueViewer.css" />
 </head>
-
 <body>
   <header class="dashboard-header">
     <h1 class="dash-title">SkipTheQueue</h1>
@@ -32,34 +25,13 @@
         <div class="current-name">No one</div>
       </div>
 
-      <!-- 🔁 BACKEND INTERACTION:
-           This number should be updated when the "next" person is served.
-           JavaScript should fetch the next user from the backend and update this.
-      -->
-      <div id="servingNumber" class="serving-number">0</div>
-      <p class="serving-note">Click the number to serve next person</p>
+      <!-- New Serve Next Button -->
+      <button id="serveNextBtn" class="serve-btn">Serve Next</button>
 
       <h3 class="add-header">Add to Queue</h3>
-
-      <!-- 🔁 BACKEND INTERACTION:
-           On submit, this form should send the user's name and phone number to the backend.
-           JavaScript should handle form submission and make a POST request to store the entry.
-      -->
       <form id="addForm" class="add-form">
-        <input
-          type="tel"
-          id="newPhone"
-          name="newPhone"
-          placeholder="Phone (e.g. +1 234 567 890)"
-          required
-        />
-        <input
-          type="text"
-          id="newName"
-          name="newName"
-          placeholder="Name"
-          required
-        />
+        <input type="tel" id="newPhone" name="newPhone" placeholder="Phone (e.g. +1 234 567 890)" required />
+        <input type="text" id="newName" name="newName" placeholder="Name" required />
         <button type="submit" class="add-btn">Add</button>
       </form>
     </section>
@@ -67,17 +39,8 @@
     <section class="panel right-panel">
       <h2 class="panel-heading">People in Queue</h2>
       <div class="queue-header">
-        <!-- 🔁 BACKEND INTERACTION:
-             This number should reflect the current queue length fetched from the backend.
-        -->
         <span id="queueCount">0</span> in queue
       </div>
-
-      <!-- 🔁 BACKEND INTERACTION:
-           This list should be dynamically populated from the backend queue data.
-           JavaScript should fetch and render each person's name/phone.
-           Also allow removing/crossing out users via backend request.
-      -->
       <ul id="queueList" class="queue-list"></ul>
     </section>
   </main>
@@ -86,13 +49,6 @@
     © 2025 SkipTheQueue. All rights reserved.
   </footer>
 
-  <!-- 🔁 BACKEND INTERACTION IN JAVASCRIPT:
-       This JS should:
-       - Fetch the current queue on page load
-       - Handle "Add" form submission
-       - Handle "Serve next" actions
-       - Update UI based on backend responses
-  -->
   <script src="../static/js/queueViewer.js"></script>
 </body>
 </html>
