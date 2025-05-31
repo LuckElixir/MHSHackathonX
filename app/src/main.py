@@ -9,13 +9,14 @@ app: Flask = Flask(__name__, static_folder=os.path.join("app", "front", "static"
 
 @app.route("/")
 def home():
-    return "Hello World!"
+    return render_template("index.html")
 
 
 @app.route("/phonenumber", methods=["POST"])
 def takePhone():
-    if request.method:
-        pass
+    if request.method == "POST":
+        data = request.get_json()
+        name = data.get('name','')
 
 if __name__ == "__main__":
     app.run(host='10.100.144.213', port=5000, debug=True, threaded=False)
