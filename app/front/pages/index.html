@@ -1,6 +1,96 @@
-<!DOCTYPE html> 
-<html>
-<title>Home Page</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SkipTheQueue - Contact Us</title>
+  <!-- Link to CSS in ../static/css/ -->
+  <link rel="stylesheet" href="../static/css/styles.css" />
+</head>
 <body>
-    Hello World!
-</body></html>
+  <header>Contact Us</header>
+
+  <div class="description">
+    <p>
+      Skip the wait! Tell us your problem and preferred contact method. We'll notify
+      you when it's your turn to call us, so you don't have to stay on hold.
+    </p>
+  </div>
+
+  <div class="contact-method">
+    <label for="contactPreference">How would you like to be contacted?</label>
+    <select id="contactPreference">
+      <option value="">Select an option</option>
+      <option value="sms">SMS</option>
+      <option value="email">Email</option>
+    </select>
+  </div>
+
+  <form id="contactForm">
+    <div id="smsFields" class="form-section">
+      <label for="name_sms">Your Name</label>
+      <input
+        type="text"
+        id="name_sms"
+        name="name_sms"
+        required
+      />
+
+      <label for="phone">Phone Number</label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        placeholder="e.g., +1234567890"
+        required
+      />
+
+      <label for="issue_sms">Describe Your Issue</label>
+      <textarea
+        id="issue_sms"
+        name="issue_sms"
+        rows="4"
+        required
+      ></textarea>
+    </div>
+
+    <div id="emailFields" class="form-section">
+      <label for="name_email">Your Name</label>
+      <input
+        type="text"
+        id="name_email"
+        name="name_email"
+        required
+      />
+
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="you@example.com"
+        required
+      />
+
+      <label for="issue_email">Describe Your Issue</label>
+      <textarea
+        id="issue_email"
+        name="issue_email"
+        rows="4"
+        required
+      ></textarea>
+    </div>
+
+    <button id="submitBtn" type="submit" class="form-section">
+      Submit
+    </button>
+  </form>
+
+  <footer>
+    &copy; 2025 SkipTheQueue. All rights reserved.
+  </footer>
+
+  <!-- Link to JS in ../static/js/ -->
+  <script src="../static/js/script.js"></script>
+</body>
+</html>
