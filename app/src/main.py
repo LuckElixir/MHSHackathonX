@@ -1,4 +1,6 @@
-from flask import Flask, jsonify 
+from sqlite3 import IntegrityError
+
+from flask import Flask, jsonify
 from flask import render_template, url_for, request, redirect
 from flask import session
 from markupsafe import escape
@@ -22,39 +24,29 @@ async def takePhone():
             data = request.get_json()
             if data and "type" in data:
                 if data["type"] == "email":
-                    if "email" in data and "name" in data and "preferred_response" in data:
-                        email = data["email"]
-                        name = data["name"]
-                        preferred_response = data["preferred_response"]
-                        if preferred_response == 1:
-                            # Assuming 1 means email
-                            query = f"INSERT INTO your_table (name, email, phone, preferred_response) VALUES ('{name}', '{email}', NULL, {preferred_response});"
-                            await queries.connect_db(query)
-                            send_email.send_email(email)
-                            return jsonify(response="success", message="Email data processed")
-                        else:
-                            return jsonify(response="error", message="Invalid 'preferred_response' value for email"), 400
-                    else:
-                        return jsonify(response="error", message="Missing 'email', 'name', or 'preferred_response' for type 'email'"), 400
+                    email = data["email"]
+                    name = data["name"]
+                    preferred_response = 1
+                    # Assuming 1 means email
+                    query = f"INSERT INTO user_information (Name, Preferred_Contact, Phone, Email) VALUES ('{name}', {preferred_response},  NULL, '{email}');"
+                    await queries.connect_db(query)
+                    send_email.send_email(email)
+                    return jsonify(response="success", message="Email data processed")
                 elif data["type"] == "sms":
-                    if "phone" in data and "name" in data and "preferred_response" in data:
-                        phone = data["phone"]
-                        name = data["name"]
-                        preferred_response = data["preferred_response"]
-                        if preferred_response == 2:
-                            # Assuming 2 means sms
-                            query = f"INSERT INTO your_table (name, email, phone, preferred_response) VALUES ('{name}', NULL, '{phone}', {preferred_response});"
-                            await queries.connect_db(query)
-                            send_sms.send_sms(phone)
-                            return jsonify(response="success", message="SMS data processed")
-                        else:
-                            return jsonify(response="error", message="Invalid 'preferred_response' value for sms"), 400
-                    else:
-                        return jsonify(response="error", message="Missing 'phone', 'name', or 'preferred_response' for type 'sms'"), 400
+                    phone = data["phone"]
+                    name = data["name"]
+                    preferred_response = 2
+                    # Assuming 2 means sms
+                    query = f"INSERT INTO user_information (Name, Preferred_Contact, Phone, Email) VALUES ('{name}', {preferred_response}, '{phone}', NULL);"
+                    await queries.connect_db(query)
+                    send_sms.send_sms(phone)
+                    return jsonify(response="success", message="SMS data processed")
                 else:
                     return jsonify(response="error", message="Invalid 'type' in request"), 400
             else:
                 return jsonify(response="error", message="Missing 'type' in request data"), 400
+        except IntegrityError:
+            return jsonify(response="error", message=f"Number/email already in the queue!"), 401
         except Exception as e:
             return jsonify(response="error", message=f"Error processing request: {str(e)}"), 500
     else:
