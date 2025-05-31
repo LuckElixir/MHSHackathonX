@@ -5,6 +5,7 @@ $(document).ready(function () {
   const $submitBtn = $('#submitBtn');
   const $contactForm = $('#contactForm');
 
+  // Toggle visibility of form sections
   function toggleSection($section, show) {
     if (show) {
       $section.addClass('visible');
@@ -13,6 +14,7 @@ $(document).ready(function () {
     }
   }
 
+  // Toggle visibility of submit button
   function toggleSubmitBtn(show) {
     if (show) {
       $submitBtn.addClass('visible');
@@ -21,6 +23,7 @@ $(document).ready(function () {
     }
   }
 
+  // Show appropriate form section based on dropdown
   $contactPreference.on('change', function () {
     const method = $(this).val();
 
@@ -37,6 +40,7 @@ $(document).ready(function () {
     }
   });
 
+  // Attach validation to input
   function setupValidation($inputElem) {
     $inputElem.on('input', function () {
       if (this.checkValidity()) {
@@ -47,9 +51,11 @@ $(document).ready(function () {
     });
   }
 
+  // Set up validation for phone and email fields
   setupValidation($('#phone'));
   setupValidation($('#email'));
 
+  // Handle form submission via AJAX
   $contactForm.on('submit', function (e) {
     e.preventDefault();
 
@@ -73,7 +79,7 @@ $(document).ready(function () {
     }
 
     $.ajax({
-      url: '/submit', // replace with real endpoint
+      url: '/submit', // Replace with actual endpoint
       method: 'POST',
       data: JSON.stringify(formData),
       contentType: 'application/json',
